@@ -8,7 +8,7 @@
     <settings-ports
       :ports="dockerRun.ports"
       @add:port="dockerRun.ports.push($event)"
-      @remove:port="removePort"
+      @remove:port="dockerRun.ports.splice($event, 1)"
     />
     <settings-limits
       :settings="dockerRun.limits"
@@ -37,11 +37,6 @@ export default {
   computed: {
     json: function () {
       return dockerRunBuilder(this.dockerRun);
-    }
-  },
-  methods: {
-    removePort: function (portIndex) {
-      this.dockerRun.ports.splice(portIndex, 1);
     }
   }
 };
