@@ -1,18 +1,44 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <SettingsGeneral
+      :name.sync="dockerRun.name"
+      :image.sync="dockerRun.image"
+      :detached.sync="dockerRun.detached"
+    />
+    <SettingsPorts
+      :ports="dockerRun.ports"
+      @add:port="dockerRun.ports.push($event)"
+      @remove:port="removePort"
+    />
+    <pre>{{ json }}</pre>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
+import SettingsGeneral from './components/SettingsGeneral.vue';
+import SettingsPorts from './components/SettingsPorts.vue';
+import store from './store';
+import dockerRunBuilder from "./services/dockerRunBuilder.js";
 
 export default {
   name: 'app',
+  data: () => ({
+    dockerRun: store()
+  }),
   components: {
-    HelloWorld,
+    SettingsGeneral,
+    SettingsPorts
   },
+  computed: {
+    json: function () {
+      return dockerRunBuilder(this.dockerRun);
+    }
+  },
+  methods: {
+    removePort: function (portIndex) {
+      this.dockerRun.ports.splice(portIndex, 1);
+    }
+  }
 };
 </script>
 
@@ -21,7 +47,6 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   margin-top: 60px;
 }
