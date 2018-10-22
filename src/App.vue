@@ -1,14 +1,17 @@
 <template>
   <div id="app">
-    <SettingsGeneral
+    <settings-general
       :name.sync="dockerRun.name"
       :image.sync="dockerRun.image"
       :detached.sync="dockerRun.detached"
     />
-    <SettingsPorts
+    <settings-ports
       :ports="dockerRun.ports"
       @add:port="dockerRun.ports.push($event)"
       @remove:port="removePort"
+    />
+    <settings-limits
+      :settings="dockerRun.limits"
     />
     <pre>{{ json }}</pre>
   </div>
@@ -17,6 +20,7 @@
 <script>
 import SettingsGeneral from './components/SettingsGeneral.vue';
 import SettingsPorts from './components/SettingsPorts.vue';
+import SettingsLimits from './components/SettingsLimits.vue';
 import store from './store';
 import dockerRunBuilder from "./services/dockerRunBuilder.js";
 
@@ -27,7 +31,8 @@ export default {
   }),
   components: {
     SettingsGeneral,
-    SettingsPorts
+    SettingsPorts,
+    SettingsLimits
   },
   computed: {
     json: function () {

@@ -35,7 +35,7 @@ export default {
 </script>
 
 <template>
-  <AppGroup header="Ports">
+  <app-group header="Ports">
     <div v-for="(port, index) of ports" :key="index">
       <input
         ref="hostPorts"
@@ -66,7 +66,7 @@ export default {
         v-model.number="newPort.container"
         @input="onNewPortChanged('container')">
     </div>
-  </AppGroup>
+  </app-group>
 </template>
 
 <style scoped>
