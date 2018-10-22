@@ -7,27 +7,39 @@ export default {
   props: {
     items: Array,
     buildNew: Function,
-    keyField: String,
-    valueField: String,
+    keyField: {
+      type: String,
+      default: "key"
+    },
+    valueField: {
+      type: String,
+      default: "value"
+    },
     keyLabel: String,
     valueLabel: String
   },
   data: function() {
     return {
-      newItem: this.buildNew(),
+      newItem: (this.buildNew || this.buildNewDefault)(),
       idPrefix: {
-        key: `key${Date.now}${floor(1000*random())}`,
-        value: `value${Date.now}${floor(1000*random())}`,
+        key: `key${Date.now}${floor(1000 * random())}`,
+        value: `value${Date.now}${floor(1000 * random())}`
       }
     };
   },
   methods: {
-    onNewChanged: function(side) {
+    buildNewDefault() {
+      return {
+        [this.keyField]: null,
+        [this.valueField]: null
+      }
+    },
+    onNewChanged(side) {
       this.$emit("add:item", this.newItem);
-      this.newItem = this.buildNew();
+      this.newItem = (this.buildNew || this.buildNewDefault)();
       Vue.nextTick(() => getLast(this.$refs[`${side}Inputs`]).focus());
     },
-    onChanged: function(item, index) {
+    onChanged(item, index) {
       if (!item[this.keyField] && !item[this.valueField]) {
         this.$emit("remove:item", index);
       }
