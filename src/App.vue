@@ -5,23 +5,23 @@
       :image.sync="dockerRun.image"
       :detached.sync="dockerRun.detached"
     />
-    <settings-ports
-      :ports="dockerRun.ports"
-      @add:port="dockerRun.ports.push($event)"
-      @remove:port="dockerRun.ports.splice($event, 1)"
-    />
-    <settings-environment
-      :env="dockerRun.envVariables"
-      @add:env="dockerRun.envVariables.push($event)"
-      @remove:env="dockerRun.envVariables.splice($event, 1)"
-    />
+    <app-group header="Ports">
+      <app-key-value-list
+        :items="dockerRun.ports"
+        key-field="host"
+        value-field="container"
+      />
+    </app-group>
+    <app-group header="Environment">
+      <app-key-value-list
+        :items="dockerRun.envVariables"
+      />
+    </app-group>
     <app-group header="Volumes">
       <app-key-value-list
         :items="dockerRun.volumes"
         key-field="host"
         value-field="container"
-        @add:item="dockerRun.volumes.push($event)"
-        @remove:item="dockerRun.volumes.splice($event, 1)"
       />
     </app-group>
     <settings-limits
@@ -35,9 +35,7 @@
 import AppGroup from './components/AppGroup.vue'
 import AppKeyValueList from './components/AppKeyValueList.vue'
 import SettingsGeneral from './components/SettingsGeneral.vue';
-import SettingsPorts from './components/SettingsPorts.vue';
 import SettingsLimits from './components/SettingsLimits.vue';
-import SettingsEnvironment from './components/SettingsEnvironment.vue';
 import store from './store';
 import dockerRunBuilder from "./services/dockerRunBuilder.js";
 
@@ -50,9 +48,7 @@ export default {
     AppGroup,
     AppKeyValueList,
     SettingsGeneral,
-    SettingsPorts,
-    SettingsLimits,
-    SettingsEnvironment
+    SettingsLimits
   },
   computed: {
     json: function () {

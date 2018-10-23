@@ -35,13 +35,13 @@ export default {
       }
     },
     onNewChanged(side) {
-      this.$emit("add:item", this.newItem);
+      this.items.push(this.newItem);
       this.newItem = (this.buildNew || this.buildNewDefault)();
       Vue.nextTick(() => getLast(this.$refs[`${side}Inputs`]).focus());
     },
     onChanged(item, index) {
       if (!item[this.keyField] && !item[this.valueField]) {
-        this.$emit("remove:item", index);
+        this.items.splice(index, 1);
       }
     }
   }
@@ -66,7 +66,7 @@ export default {
         v-model="item[valueField]"
         @input="onChanged(item, index)">
     </div>
-    <div>
+    <div :class="{ new: !!items.length }">
       <label for="newItemKey">{{ keyLabel || keyField }}</label>
       <input
         type="text"
@@ -84,4 +84,10 @@ export default {
 </template>
 
 <style scoped>
+.new {
+  opacity: .5;
+}
+.new:active {
+  opacity: 1;
+}
 </style>
