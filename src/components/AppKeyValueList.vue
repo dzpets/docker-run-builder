@@ -22,8 +22,8 @@ export default {
     return {
       newItem: (this.buildNew || this.buildNewDefault)(),
       idPrefix: {
-        key: `key${Date.now}${floor(1000 * random())}`,
-        value: `value${Date.now}${floor(1000 * random())}`
+        key: `key${Date.now()}${floor(900 * random() + 100)}`,
+        value: `value${Date.now()}${floor(900 * random() + 100)}`
       }
     };
   },
@@ -87,7 +87,7 @@ export default {
 .new {
   opacity: .5;
 }
-.new:active {
+.new:focus-within, .new:hover {
   opacity: 1;
 }
 </style>
